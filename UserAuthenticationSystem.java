@@ -112,7 +112,7 @@ class Patient extends User {
 
     try {
       String result = UserAuthenticationSystem.executeScript("./user_management.sh", "update_profile",
-          this.uuid, this.email, firstName, lastName, password, dateOfBirth,
+          this.uuid, this.email.trim(), firstName, lastName, password, dateOfBirth,
           String.valueOf(hivStatus), diagnosisDate, String.valueOf(artStatus),
           artStartDate, countryISOCode);
       System.out.println(result);
@@ -128,15 +128,61 @@ class Patient extends User {
     try {
       String result = UserAuthenticationSystem.executeScript("./user_management.sh", "validate_password", this.email,
           password);
+      System.out.println(result + " this is the result");
       if ("valid".equals(result)) {
         System.out.println("Password validated. Proceeding...");
         // Add code to proceed with the user's menu or functionality here
+        patientFunctionality(scanner, this.email);
       } else {
         System.out.println("Invalid password.");
       }
     } catch (Exception e) {
       System.out.println("Error during authentication: " + e.getMessage());
     }
+  }
+
+  private void patientFunctionality(Scanner scanner, String email) {
+    while (true) {
+      System.out.println("\nPatient Menu");
+      System.out.println("1. View Profile");
+      System.out.println("2. Update Profile");
+      System.out.println("3. Logout");
+      System.out.print("Choose an option: ");
+      int choice = scanner.nextInt();
+      scanner.nextLine(); // Consume newline
+
+      switch (choice) {
+        case 1:
+          patientProfile(email);
+          break;
+        case 2:
+          updateProfile(scanner);
+        case 3:
+          return;
+        default:
+          System.out.println("Invalid option. Please try again.");
+      }
+    }
+  }
+
+  private void patientProfile(String email) {
+    try {
+      String result = UserAuthenticationSystem.executeScript("./user_management.sh", "view_profile", email);
+      System.out.println("\nPatient Profile");
+      String[] parts = result.split(",");
+      System.out.println("\nFirstName: " + parts[2]);
+      System.out.println("\nlastName: " + parts[3]);
+      System.out.println("\nemail: " + parts[0]);
+      System.out.println("\ndate of birth: " + parts[5]);
+      System.out.println("\ndiagnosis Status: " + parts[6]);
+      System.out.println("\ndiagnosis Date: " + parts[7]);
+      System.out.println("\nART Status: " + parts[8]);
+      System.out.println("\nART Date: " + parts[9]);
+      System.out.println("\nCountry ISO: " + parts[10]);
+    } catch (Exception e) {
+      System.out.println("Error during getting patient Profile: " + e.getMessage());
+    }
+
   }
 }
 
@@ -159,24 +205,9 @@ public class UserAuthenticationSystem {
               System.out.println("no error here");
               patientLoginByEmail(input, scanner);
             } else {
-              System.out.println("login with your Id");
+              System.out.println("login with your UUID");
               patientLoginByUUID(input, scanner);
             }
-            // System.out.println("firstName ==>>");
-            // patientLoginByEmail(input, scanner);
-            // // if (parts.length >= 1) {
-            // // String firstName = parts[1];
-            // // System.out.println(firstName);
-            // // if (firstName != null && !firstName.isEmpty()) {
-            // // patientLoginByEmail(input, scanner);
-            // // } else {
-            // // System.out.print("Enter UUID: ");
-            // // String uuid = scanner.nextLine();
-            // // patientLoginByUUID(uuid, scanner);
-            // // }
-            // } else {
-            // System.out.println("Unexpected result format from the script. from main");
-            // }
           } else {
             System.out.println("Email not found in the system.");
           }
@@ -245,7 +276,7 @@ public class UserAuthenticationSystem {
         System.out.println("Invalid UUID.");
       }
     } catch (Exception e) {
-      System.out.println("Error during login: " + e.getMessage());
+      System.out.println("Error during login 101: " + e.getMessage());
     }
   }
 
