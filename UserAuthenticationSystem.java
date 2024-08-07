@@ -197,7 +197,7 @@ public class UserAuthenticationSystem {
         adminLogin(scanner);
       } else if (input.contains("@")) {
         try {
-          String result = executeScript("./user_management.sh", "get_by_email", input);
+          String result = executeScript("C:\\Program Files\\Git\\bin\\bash.exe", "./user_management.sh", "get_by_email", input);
           System.out.println("this is the error>>>> " + result);
           if (result != null && !result.isEmpty() && !result.equals("not_found")) {
             String[] parts = result.split(",");
@@ -234,7 +234,7 @@ public class UserAuthenticationSystem {
 
   private static void patientLoginByEmail(String email, Scanner scanner) {
     try {
-      String result = executeScript("./user_management.sh", "get_by_email", email);
+      String result = executeScript("C:\\Program Files\\Git\\bin\\bash.exe", "./user_management.sh", "get_by_email", email);
       if (result != null && !result.isEmpty()) {
         String[] parts = result.split(",");
         if (parts.length >= 2) {
@@ -259,7 +259,7 @@ public class UserAuthenticationSystem {
 
   private static void patientLoginByUUID(String uuid, Scanner scanner) {
     try {
-      String result = executeScript("./user_management.sh", "verify_uuid", uuid);
+      String result = executeScript("C:\\Program Files\\Git\\bin\\bash.exe", "./user_management.sh", "verify_uuid", uuid);
       System.out.println(result + "this is the result " + uuid);
       if (result != null && !result.isEmpty()) {
         String[] parts = result.split(",");
