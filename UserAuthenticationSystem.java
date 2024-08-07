@@ -32,7 +32,9 @@ class Admin extends User {
     while (true) {
       System.out.println("\nAdmin Menu");
       System.out.println("1. Register a patient");
-      System.out.println("2. Logout");
+      System.out.println("2. Export patients data");
+      System.out.println("3. Export Patients Stats ");
+      System.out.println("4. Logout");
       System.out.print("Choose an option: ");
       int choice = scanner.nextInt();
       scanner.nextLine(); // Consume newline
@@ -42,11 +44,24 @@ class Admin extends User {
           registerPatient(scanner);
           break;
         case 2:
+          exportPatients();
+            break;
+        case 4:
           return;
         default:
           System.out.println("Invalid option. Please try again.");
       }
     }
+  }
+
+//  Function to export patients data
+  private void exportPatients() {
+      try {
+          String result = UserAuthenticationSystem.executeScript("./user_management.sh", "export_patient_data");
+           System.out.println(result);
+      } catch (Exception e) {
+          throw new RuntimeException(e);
+      }
   }
 
   private void registerPatient(Scanner scanner) {

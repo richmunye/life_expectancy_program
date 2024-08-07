@@ -114,6 +114,22 @@ view_profile() {
   fi
 }
 
+#Function to export
+export_patient_data() {
+  timestamp=$(date +"%Y%m%d%H%M%S")
+  output_file="patients_data_${timestamp}.csv"
+
+  cd patient_data || exit 1 # change directory, exit if fails
+  # Use awk to remove the password column
+    awk -F, '{
+      OFS=",";
+      $5=""; sub(",,",",")
+      print
+    }' "$USER_DATA_FILE" > "$output_file"
+
+    echo "Patient data exported patient_data/$output_file"
+}
+
 # Main script logic
 command=$1
 shift
@@ -136,6 +152,9 @@ case $command in
   ;;
 "validate_password")
   validate_password "$1" "$2"
+  ;;
+"export_patient_data")
+  export_patient_data
   ;;
 *)
   echo "Invalid command"
