@@ -1,4 +1,5 @@
 package User;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;
@@ -46,7 +47,7 @@ class Admin extends User {
           break;
         case 2:
           exportPatients();
-            break;
+          break;
         case 4:
           return;
         default:
@@ -55,14 +56,14 @@ class Admin extends User {
     }
   }
 
-//  Function to export patients data
+  // Function to export patients data
   private void exportPatients() {
-      try {
-          String result = UserAuthenticationSystem.executeScript("script/user_management.sh", "export_patient_data");
-           System.out.println(result);
-      } catch (Exception e) {
-          throw new RuntimeException(e);
-      }
+    try {
+      String result = UserAuthenticationSystem.executeScript("script/user_management.sh", "export_patient_data");
+      System.out.println(result);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private void registerPatient(Scanner scanner) {
@@ -113,7 +114,7 @@ class Patient extends User {
     String diagnosisDate = "";
     if (hivStatus) {
       System.out.print("Diagnosis Date (YYYY-MM-DD): ");
-      diagnosisDate = scanner.nextLine();
+      diagnosisDate = "".equals(scanner.nextLine()) ? "N/A" : scanner.nextLine();
     }
     System.out.print("ART Status (true/false): ");
     boolean artStatus = scanner.nextBoolean();
@@ -142,7 +143,8 @@ class Patient extends User {
     String password = scanner.nextLine();
 
     try {
-      String result = UserAuthenticationSystem.executeScript("script/user_management.sh", "validate_password", this.email,
+      String result = UserAuthenticationSystem.executeScript("script/user_management.sh", "validate_password",
+          this.email,
           password);
       System.out.println(result + " this is the result");
       if ("valid".equals(result)) {
@@ -172,6 +174,7 @@ class Patient extends User {
           patientProfile(email);
           break;
         case 2:
+          System.out.println("Press enter if you do not want to update the field!!");
           updateProfile(scanner);
         case 3:
           return;
@@ -254,7 +257,7 @@ public class UserAuthenticationSystem {
         if (parts.length >= 2) {
           String uuid = parts[0];
           String firstName = parts[1];
-//          System.out.println(parts[1].toString() + " these are the parts to complete");
+          // System.out.println(parts[1].toString() + " these are the parts to complete");
           // String firstName = parts[1];
           Patient patient = new Patient(uuid, email);
           patient.firstName = firstName; // Set firstName for checking profile
@@ -274,7 +277,7 @@ public class UserAuthenticationSystem {
   private static void patientLoginByUUID(String uuid, Scanner scanner) {
     try {
       String result = executeScript("script/user_management.sh", "verify_uuid", uuid);
-//      System.out.println(result + "this is the result " + uuid);
+      // System.out.println(result + "this is the result " + uuid);
       if (result != null && !result.isEmpty()) {
         String[] parts = result.split(",");
         if (parts != null) {
