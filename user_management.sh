@@ -197,6 +197,9 @@ case $command in
 "validate_password")
   validate_password "$1" "$2"
   ;;
+"get_life_expectancy_by_country_code")
+  get_life_expectancy_by_country_code "$1"
+  ;;
 *)
   echo "Invalid command"
   ;;

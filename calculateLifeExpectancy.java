@@ -1,33 +1,39 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class calculateLifeExpectancy {
     public static void main(String[] args) {
-        String email = "patient@gmail.com";
-        System.out.println(getUserDetailsByEmail(email)); 
-        // int patientRemainingLife = calculatePatientLifeExpectancy(email);
-        // System.out.println("Patient's remaining life expectancy: " + patientRemainingLife + " years");
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter patient email: ");
+        String email = scanner.nextLine();
+
+//        String email = "elie@gmail.com";
+        int patientRemainingLife = calculatePatientLifeExpectancy(email);
+        System.out.println("Patient's remaining life expectancy: " + patientRemainingLife + " years");
     }
 
     public static int calculatePatientLifeExpectancy(String email) {
         try {
             List<String> userDetails = getUserDetailsByEmail(email);
-            System.out.println(userDetails + "details");
             if (userDetails.isEmpty()) {
                 System.out.println("No user details found for email: " + email);
                 return -1;
             }
-
             String dob = userDetails.get(0);
             boolean hivStatus = Boolean.parseBoolean(userDetails.get(1));
+
             String diagnosisDate = userDetails.get(2);
             boolean artStatus = Boolean.parseBoolean(userDetails.get(3));
             String artStartDate = userDetails.get(4);
             String countryIso = userDetails.get(5);
-
+//
             double countryLifeExpectancy = getLifeExpectancyByCountryCode(countryIso);
+
 
             int roundedLifeExpectancy = (int) Math.ceil(countryLifeExpectancy);
 
@@ -64,28 +70,15 @@ public class calculateLifeExpectancy {
     private static List<String> getUserDetailsByEmail(String email) {
 
 
-        try{
+        try {
             List<String> userDetails = new ArrayList<>();
             String result = executeScript("bash", "./user_management.sh", "get_user_details_by_email", email);
             String[] parts = result.split(",");
-            for(int i = 0; i < parts.length; i++){
+            for (int i = 0; i < parts.length; i++) {
                 userDetails.add(parts[i]);
             }
             return userDetails;
-            // ProcessBuilder builder = new ProcessBuilder("bash", "./user_management.sh", "get_user_details_by_email", email);
-            // builder.redirectErrorStream(true);
-            // Process process = builder.start();
-
-            // try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            //     String line;
-            //     while ((line = reader.readLine()) != null) {
-            //         userDetails.add(line);
-            //     }
-            // }
-            // process.waitFor();
-            // return userDetails;
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
@@ -94,37 +87,28 @@ public class calculateLifeExpectancy {
     public static String executeScript(String... command) throws Exception {
         ProcessBuilder pb = new ProcessBuilder(command);
         Process p = pb.start();
-    
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
         StringBuilder output = new StringBuilder();
         String line;
         while ((line = reader.readLine()) != null) {
-          output.append(line);
+            output.append(line);
         }
-    
+
         int exitCode = p.waitFor();
         if (exitCode != 0) {
-          throw new RuntimeException("Script execution failed with exit code: " + exitCode);
+            throw new RuntimeException("Script execution failed with exit code: " + exitCode);
         }
-    
+
         return output.toString();
-      }
+    }
+
 
     private static double getLifeExpectancyByCountryCode(String countryCode) {
-        try{
-            ProcessBuilder builder = new ProcessBuilder("bash", "./user_management.sh", "get_life_expectancy_by_code", countryCode);
-            builder.redirectErrorStream(true);
-            Process process = builder.start();
-
-            double lifeExpectancy;
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String line = reader.readLine();
-                lifeExpectancy = Double.parseDouble(line);
-            }
-            process.waitFor();
-            return lifeExpectancy;
-        }
-        catch(Exception ex){
+        try {
+            String result = executeScript("bash", "./user_management.sh", "get_life_expectancy_by_country_code", countryCode);
+            return Double.parseDouble(result);
+        } catch (Exception ex) {
             ex.printStackTrace();
             return 0.0;
         }
