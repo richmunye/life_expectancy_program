@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # User data file
-USER_DATA_FILE="users.csv"
+USER_DATA_FILE="../Resources/users.csv"
 
 # Create the CSV file if it doesn't exist
 if [ ! -f "$USER_DATA_FILE" ]; then
