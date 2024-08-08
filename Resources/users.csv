@@ -1,0 +1,4 @@
+email,uuid,first_name,last_name,password,dob,hiv_status,diagnosis_date,art_status,art_start_date,country_iso
+rich@gmail.com,EB81C0E4-A01F-419C-9AE8-F1465CA9C183,,,,,,,,,,
+patient@gmail.com,CB9390D2-3F16-48A6-9C9F-777983952303,rich,munye,$1$vZJw1PdD$ckAwQx4wZW025wOILqW7Y0,2023-10-10,true,2023-11-11,true,2023-12-12,RWA
+elie@gmail.com,4B84DB3C-D803-49E6-B5F9-80FD1E9E0627,elie,kagabo,$1$vZJw1PdD$xYMNFyX9jdkgCCgDZ5.Dd.,2023-10-10,true,2023-11-11,true,2023-12-12,RWA,

@@ -1,3 +1,4 @@
+package User;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;
@@ -69,7 +70,7 @@ class Admin extends User {
     String email = scanner.nextLine();
 
     try {
-      String result = UserAuthenticationSystem.executeScript("./user_management.sh", "register", email);
+      String result = UserAuthenticationSystem.executeScript("../script/user_management.sh", "register", email);
       if (result.equals("exists")) {
         System.out.println("Patient already exists in the system.");
       } else {
@@ -126,7 +127,7 @@ class Patient extends User {
     String countryISOCode = scanner.nextLine();
 
     try {
-      String result = UserAuthenticationSystem.executeScript("./user_management.sh", "update_profile",
+      String result = UserAuthenticationSystem.executeScript("../script/user_management.sh", "update_profile",
           this.uuid, this.email.trim(), firstName, lastName, password, dateOfBirth,
           String.valueOf(hivStatus), diagnosisDate, String.valueOf(artStatus),
           artStartDate, countryISOCode);
@@ -141,7 +142,7 @@ class Patient extends User {
     String password = scanner.nextLine();
 
     try {
-      String result = UserAuthenticationSystem.executeScript("./user_management.sh", "validate_password", this.email,
+      String result = UserAuthenticationSystem.executeScript("../script/user_management.sh", "validate_password", this.email,
           password);
       System.out.println(result + " this is the result");
       if ("valid".equals(result)) {
@@ -182,7 +183,7 @@ class Patient extends User {
 
   private void patientProfile(String email) {
     try {
-      String result = UserAuthenticationSystem.executeScript("./user_management.sh", "view_profile", email);
+      String result = UserAuthenticationSystem.executeScript("../script/user_management.sh", "view_profile", email);
       System.out.println("\nPatient Profile");
       String[] parts = result.split(",");
       System.out.println("\nFirstName: " + parts[2]);
@@ -212,7 +213,7 @@ public class UserAuthenticationSystem {
         adminLogin(scanner);
       } else if (input.contains("@")) {
         try {
-          String result = executeScript("./user_management.sh", "get_by_email", input);
+          String result = executeScript("C:\\Program Files\\Git\\bin\\bash.exe", "../script/user_management.sh", "get_by_email", input);
           System.out.println("this is the error>>>> " + result);
           if (result != null && !result.isEmpty() && !result.equals("not_found")) {
             String[] parts = result.split(",");
@@ -249,7 +250,7 @@ public class UserAuthenticationSystem {
 
   private static void patientLoginByEmail(String email, Scanner scanner) {
     try {
-      String result = executeScript("./user_management.sh", "get_by_email", email);
+      String result = executeScript("C:\\Program Files\\Git\\bin\\bash.exe", "../script/user_management.sh", "get_by_email", email);
       if (result != null && !result.isEmpty()) {
         String[] parts = result.split(",");
         if (parts.length >= 2) {
@@ -274,7 +275,7 @@ public class UserAuthenticationSystem {
 
   private static void patientLoginByUUID(String uuid, Scanner scanner) {
     try {
-      String result = executeScript("./user_management.sh", "verify_uuid", uuid);
+      String result = executeScript("C:\\Program Files\\Git\\bin\\bash.exe", "../script/user_management.sh", "verify_uuid", uuid);
       System.out.println(result + "this is the result " + uuid);
       if (result != null && !result.isEmpty()) {
         String[] parts = result.split(",");

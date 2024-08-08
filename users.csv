@@ -1,4 +1,0 @@
-email,uuid,first_name,last_name,password,dob,hiv_status,diagnosis_date,art_status,art_start_date,country_iso
-rich@gmail.com,EB81C0E4-A01F-419C-9AE8-F1465CA9C183,,,,,,,,,,
-patient@gmail.com,CB9390D2-3F16-48A6-9C9F-777983952303,Patient,Patty,$1$vZJw1PdD$K8xQ/SD4bFXmK9rVLGAXY1,2000-09-07,true,2024-01-03,false,,RWA,
-elie@gmail.com,3E0132DF-C7AD-43CF-AA35-395A529578F9,,,,,,,,,,

@@ -19,6 +19,63 @@ get_by_email() {
   fi
 }
 
+# Function to get user details by email
+get_user_details_by_email() {
+  local email=$1
+
+  # Check if the file exists
+  if [ ! -f "$USER_DATA_FILE" ]; then
+    echo "Error: File '$USER_DATA_FILE' not found."
+    return 1
+  fi
+
+  if grep -q "^$email," "$USER_DATA_FILE"; then
+    user_data=$(grep "^$email," "$USER_DATA_FILE")
+    dob=$(echo "$user_data" | cut -d, -f6)
+    hiv_status=$(echo "$user_data" | cut -d, -f7)
+    diagnosis_date=$(echo "$user_data" | cut -d, -f8)
+    art_status=$(echo "$user_data" | cut -d, -f9)
+    art_start_date=$(echo "$user_data" | cut -d, -f10)
+    country_iso=$(echo "$user_data" | cut -d, -f11)
+
+    # Combine user details into a single variable
+    user_details="$dob,$hiv_status,$diagnosis_date,$art_status,$art_start_date,$country_iso"
+    echo "$user_details"
+  else
+    echo "Error: User with email '$email' not found in the file."
+  fi
+}
+
+# Function to get life expectancy by country code
+get_life_expectancy_by_country_code() {
+  local country_code="$1"
+  local file="life-expectancy.csv"
+
+  # Check if the file exists
+  if [ ! -f "$file" ]; then
+    echo "Error: File '$file' not found."
+    return 1
+  fi
+
+  # Get the column index for "Code" and "Life expectancy in 2021"
+  code_col=$(head -1 "$file" | awk -F, '{for (i=1; i<=NF; i++) if ($i == "Code") print i}')
+  life_exp_col=$(head -1 "$file" | awk -F, '{for (i=1; i<=NF; i++) if ($i == "Life expectancy in 2021") print i}')
+
+  # Ensure columns were found
+  if [ -z "$code_col" ] || [ -z "$life_exp_col" ]; then
+    echo "Error: Required columns not found in the file."
+    return 1
+  fi
+
+  # Get the life expectancy for the given country code
+  if grep -q ",$country_code," "$file"; then
+    life_expectancy=$(awk -F, -v code_col="$code_col" -v life_exp_col="$life_exp_col" -v code="$country_code" 'NR>1 && $code_col == code {print $life_exp_col}' "$file")
+    echo "$life_expectancy"
+  else
+    echo "Error: Country code not found."
+  fi
+}
+
 verify_uuid() {
   local uuid=$1
   if grep -q "$uuid," "$USER_DATA_FILE"; then
@@ -144,6 +201,9 @@ case $command in
 "verify_uuid")
   verify_uuid "$1"
   ;;
+"get_user_details_by_email")
+  get_user_details_by_email "$1"
+  ;;
 "view_profile")
   view_profile "$1"
   ;;
@@ -152,6 +212,9 @@ case $command in
   ;;
 "validate_password")
   validate_password "$1" "$2"
+  ;;
+"get_life_expectancy_by_country_code")
+  get_life_expectancy_by_country_code "$1"
   ;;
 "export_patient_data")
   export_patient_data
