@@ -1,3 +1,4 @@
+package User;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Scanner;
@@ -57,7 +58,7 @@ class Admin extends User {
 //  Function to export patients data
   private void exportPatients() {
       try {
-          String result = UserAuthenticationSystem.executeScript("./user_management.sh", "export_patient_data");
+          String result = UserAuthenticationSystem.executeScript("script/user_management.sh", "export_patient_data");
            System.out.println(result);
       } catch (Exception e) {
           throw new RuntimeException(e);
@@ -69,7 +70,7 @@ class Admin extends User {
     String email = scanner.nextLine();
 
     try {
-      String result = UserAuthenticationSystem.executeScript("./user_management.sh", "register", email);
+      String result = UserAuthenticationSystem.executeScript("script/user_management.sh", "register", email);
       if (result.equals("exists")) {
         System.out.println("Patient already exists in the system.");
       } else {
@@ -126,7 +127,7 @@ class Patient extends User {
     String countryISOCode = scanner.nextLine();
 
     try {
-      String result = UserAuthenticationSystem.executeScript("./user_management.sh", "update_profile",
+      String result = UserAuthenticationSystem.executeScript("script/user_management.sh", "update_profile",
           this.uuid, this.email.trim(), firstName, lastName, password, dateOfBirth,
           String.valueOf(hivStatus), diagnosisDate, String.valueOf(artStatus),
           artStartDate, countryISOCode);
@@ -141,7 +142,7 @@ class Patient extends User {
     String password = scanner.nextLine();
 
     try {
-      String result = UserAuthenticationSystem.executeScript("./user_management.sh", "validate_password", this.email,
+      String result = UserAuthenticationSystem.executeScript("script/user_management.sh", "validate_password", this.email,
           password);
       System.out.println(result + " this is the result");
       if ("valid".equals(result)) {
@@ -182,7 +183,7 @@ class Patient extends User {
 
   private void patientProfile(String email) {
     try {
-      String result = UserAuthenticationSystem.executeScript("./user_management.sh", "view_profile", email);
+      String result = UserAuthenticationSystem.executeScript("script/user_management.sh", "view_profile", email);
       System.out.println("\nPatient Profile");
       String[] parts = result.split(",");
       System.out.println("\nFirstName: " + parts[2]);
@@ -212,15 +213,13 @@ public class UserAuthenticationSystem {
         adminLogin(scanner);
       } else if (input.contains("@")) {
         try {
-          String result = executeScript("./user_management.sh", "get_by_email", input);
-          System.out.println("this is the error>>>> " + result);
+          String result = executeScript("script/user_management.sh", "get_by_email", input);
           if (result != null && !result.isEmpty() && !result.equals("not_found")) {
             String[] parts = result.split(",");
             if (parts.length >= 2) {
-              System.out.println("no error here");
               patientLoginByEmail(input, scanner);
             } else {
-              System.out.println("login with your UUID");
+              System.out.println("Login with your UUID");
               patientLoginByUUID(input, scanner);
             }
           } else {
@@ -249,13 +248,13 @@ public class UserAuthenticationSystem {
 
   private static void patientLoginByEmail(String email, Scanner scanner) {
     try {
-      String result = executeScript("./user_management.sh", "get_by_email", email);
+      String result = executeScript("script/user_management.sh", "get_by_email", email);
       if (result != null && !result.isEmpty()) {
         String[] parts = result.split(",");
         if (parts.length >= 2) {
           String uuid = parts[0];
           String firstName = parts[1];
-          System.out.println(parts[1].toString() + "these are the parts");
+//          System.out.println(parts[1].toString() + " these are the parts to complete");
           // String firstName = parts[1];
           Patient patient = new Patient(uuid, email);
           patient.firstName = firstName; // Set firstName for checking profile
@@ -274,8 +273,8 @@ public class UserAuthenticationSystem {
 
   private static void patientLoginByUUID(String uuid, Scanner scanner) {
     try {
-      String result = executeScript("./user_management.sh", "verify_uuid", uuid);
-      System.out.println(result + "this is the result " + uuid);
+      String result = executeScript("script/user_management.sh", "verify_uuid", uuid);
+//      System.out.println(result + "this is the result " + uuid);
       if (result != null && !result.isEmpty()) {
         String[] parts = result.split(",");
         if (parts != null) {
