@@ -1,20 +1,19 @@
+package User;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class calculateLifeExpectancy {
+public class CalculateLifeExpectancy {
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter patient email: ");
         String email = scanner.nextLine();
 
-//        String email = "elie@gmail.com";
         int patientRemainingLife = calculatePatientLifeExpectancy(email);
         System.out.println("Patient's remaining life expectancy: " + patientRemainingLife + " years");
+        scanner.close();
     }
 
     public static int calculatePatientLifeExpectancy(String email) {
@@ -31,9 +30,8 @@ public class calculateLifeExpectancy {
             boolean artStatus = Boolean.parseBoolean(userDetails.get(3));
             String artStartDate = userDetails.get(4);
             String countryIso = userDetails.get(5);
-//
-            double countryLifeExpectancy = getLifeExpectancyByCountryCode(countryIso);
 
+            double countryLifeExpectancy = getLifeExpectancyByCountryCode(countryIso);
 
             int roundedLifeExpectancy = (int) Math.ceil(countryLifeExpectancy);
 
@@ -68,11 +66,9 @@ public class calculateLifeExpectancy {
     }
 
     private static List<String> getUserDetailsByEmail(String email) {
-
-
         try {
             List<String> userDetails = new ArrayList<>();
-            String result = executeScript("bash", "./user_management.sh", "get_user_details_by_email", email);
+            String result = executeScript("bash", "../script/user_management.sh", "get_user_details_by_email", email);
             String[] parts = result.split(",");
             for (int i = 0; i < parts.length; i++) {
                 userDetails.add(parts[i]);
@@ -99,14 +95,12 @@ public class calculateLifeExpectancy {
         if (exitCode != 0) {
             throw new RuntimeException("Script execution failed with exit code: " + exitCode);
         }
-
         return output.toString();
     }
 
-
     private static double getLifeExpectancyByCountryCode(String countryCode) {
         try {
-            String result = executeScript("bash", "./user_management.sh", "get_life_expectancy_by_country_code", countryCode);
+            String result = executeScript("bash", "../script/user_management.sh", "get_life_expectancy_by_country_code", countryCode);
             return Double.parseDouble(result);
         } catch (Exception ex) {
             ex.printStackTrace();
