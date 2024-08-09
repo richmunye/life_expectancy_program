@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # User data file
-USER_DATA_FILE="../Resources/users.csv"
+USEUSER_DATA_FILE="../Resources/users.csv"
 
 # Create the CSV file if it doesn't exist
 if [ ! -f "$USER_DATA_FILE" ]; then
@@ -218,8 +218,4 @@ case $command in
   ;;
 "export_patient_data")
   export_patient_data
-  ;;
-*)
-  echo "Invalid command"
-  ;;
-esac
+  esac
