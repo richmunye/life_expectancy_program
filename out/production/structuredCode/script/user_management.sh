@@ -70,7 +70,7 @@ get_life_expectancy_by_country_code() {
   # Get the life expectancy for the given country code
   if grep -q ",$country_code," "$LIFE_EXPECTANCY_FILE"; then
 
-    life_expectancy=$(awk -F, -v code_col="$code_col" -v life_exp_col="$life_exp_col" -v code="$country_code" 'NR>1 && $code_col == code {print $life_exp_col}' "$LIFE_EXPECTANCY_FILE")
+    life_expectancy=$( awk -F, -v code_col="$code_col" -v life_exp_col="$life_exp_col" -v code="$country_code" 'NR>1 && $code_col == code {print $life_exp_col}' "$LIFE_EXPECTANCY_FILE")
     echo "$life_expectancy"
   else
     echo "Error: Country code not found."
@@ -224,5 +224,8 @@ case $command in
   ;;
 "export_patient_data")
   export_patient_data
+  ;;
+*)
+  echo "Invalid command"
   ;;
 esac
