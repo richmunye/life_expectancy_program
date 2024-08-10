@@ -1,11 +1,9 @@
 package User;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LifeSpanCalcupator {
+public class LifeSpanCalculator {
 
     public static int calculatePatientLifeExpectancy(String email) {
         try {

@@ -57,7 +57,7 @@ public class Patient extends User {
                     artStartDate, countryISOCode);
             System.out.println(result);
             if(result != null && !result.isEmpty()) {
-                int patientRemainingLife = LifeSpanCalcupator.calculatePatientLifeExpectancy("peace@gmail.com");
+                int patientRemainingLife = LifeSpanCalculator.calculatePatientLifeExpectancy("peace@gmail.com");
                 System.out.println("Patient's Remaining Life: " + patientRemainingLife + " Years");
             }
             Logger.log("Updated profile for patient: " + this.email);
