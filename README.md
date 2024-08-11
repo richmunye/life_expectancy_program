@@ -9,6 +9,11 @@ they start antiretrevial therapy(ART).
 1. Unzip the zipped folder and open the project in your IDE either __VS Code__ or __Intellij__
 2. Run __Main.Java__ class to start interacting with the system.
 
+## Running process
+In parent folder 
+1. > run `javac User/*.java` to compile all the java files.
+2. > run `java User.Main` to run the application.
+
 ## Navigation Of the System
 
 Below are the details of what each user of the system can perform.
