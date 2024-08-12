@@ -33,3 +33,11 @@
 2024-08-09 15:09:22 - Viewed profile for user: rose@gmail.com
 2024-08-09 15:09:49 - Viewed profile for user: rose@gmail.com
 2024-08-09 15:09:58 - User authentication attempted for: rose@gmail.com
+2024-08-10 23:22:01 - Error during login for email: elie@gmail.com - Cannot run program "script/user_management.sh": CreateProcess error=193, %1 is not a valid Win32 application
+2024-08-10 23:23:04 - Error during login for email: elie@gmail.com - Cannot run program "script/user_management.sh": CreateProcess error=193, %1 is not a valid Win32 application
+2024-08-10 23:24:33 - Error during login for email: elie@gmail.com - Cannot run program "..script/user_management.sh": CreateProcess error=2, The system cannot find the file specified
+2024-08-10 23:27:04 - Error during login for email: patient@gmail.com - Cannot run program "script/user_management.sh": CreateProcess error=193, %1 is not a valid Win32 application
+2024-08-11 00:08:24 - Error during login for email: elie@gmail.com - Cannot run program "./script/user_management.sh": CreateProcess error=193, %1 is not a valid Win32 application
+2024-08-11 00:10:49 - Error during login for email: elie@gmail.com - Cannot run program "bash": CreateProcess error=2, The system cannot find the file specified
+2024-08-11 00:12:56 - Error during authentication for user: elie@gmail.com - Cannot run program "script/user_management.sh": CreateProcess error=193, %1 is not a valid Win32 application
+2024-08-11 01:11:08 - Viewed profile for user: elie@gmail.com
