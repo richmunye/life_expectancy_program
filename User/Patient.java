@@ -5,8 +5,6 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
-import Views.BorderAroundText;
 import Views.ColorText;
 
 public class Patient extends User {
@@ -15,7 +13,6 @@ public class Patient extends User {
     }
 
     ColorText color = new ColorText();
-    BorderAroundText border = new BorderAroundText();
 
     @Override
     public void menu(Scanner scanner) {
@@ -57,7 +54,7 @@ public class Patient extends User {
         String countryISOCode = scanner.nextLine();
 
         try {
-            String result = ScriptExecutor.executeScript("C:\\Program Files\\Git\\bin\\bash.exe", "script/user_management.sh", "update_profile",
+            String result = ScriptExecutor.executeScript("script/user_management.sh", "update_profile",
                     this.uuid, this.email.trim(), firstName, lastName, password, dateOfBirth,
                     String.valueOf(hivStatus), diagnosisDate, String.valueOf(artStatus),
                     artStartDate, countryISOCode);
@@ -78,7 +75,7 @@ public class Patient extends User {
         String password = scanner.nextLine();
 
         try {
-            String result = ScriptExecutor.executeScript("C:\\Program Files\\Git\\bin\\bash.exe", "script/user_management.sh", "validate_password",
+            String result = ScriptExecutor.executeScript("script/user_management.sh", "validate_password",
                     this.email,
                     password);
             System.out.println(color.yellow(result + " this is the result"));
@@ -97,21 +94,15 @@ public class Patient extends User {
 
     private void patientFunctionality(Scanner scanner, String email) {
         while (true) {
-            // System.out.println("\nPatient Menu");
-            // System.out.println("1. View Profile");
-            // System.out.println("2. Update Profile");
-            // System.out.println("3. Logout");
+            System.out.println("  ==================================");
+            System.out.println(" | " + color.blue("          PATIENT MENU     ") + "      |");
+            System.out.println(" | 1. | View Profile                |");
+            System.out.println(" | 2. | Update Profile              |");
+            System.out.println(" | 3. | Logout                      |");
+            System.out.println("  ==================================");
 
-            String [] choices = {
-                "\nPatient Menu",
-                "1. View Profile",
-                "2. Update Profile",
-                "3. Logout",
-            };
-
-            border.printBorderedText(choices);
             System.out.println();
-            System.out.print("Choose an option: ");
+            System.out.print(color.blue("Choose an option: "));
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
 
@@ -135,7 +126,7 @@ public class Patient extends User {
         Map<String, String> userData = new HashMap<>();
         ColorText colorText = new ColorText();
         try {
-            String result = ScriptExecutor.executeScript( "C:\\Program Files\\Git\\bin\\bash.exe", "script/update_user.sh", "read", email);
+            String result = ScriptExecutor.executeScript( "script/update_user.sh", "read", email);
             System.out.println(colorText.yellow(result + "these are the data we are building"));
             if (result != null && !result.equals("User not found")) {
                 String[] fields = result.split(",");
@@ -154,31 +145,19 @@ public class Patient extends User {
     }
 
     private static void showUserDetails(Map<String, String> userData) {
-        BorderAroundText borderText = new BorderAroundText();
         ColorText colorText = new ColorText();
-        // System.out.println("\nUser Details to Update:");
-        // System.out.println("first_name: " + userData.get("first_name"));
-        // System.out.println("last_name: " + userData.get("last_name"));
-        // System.out.println("dob: " + userData.get("dob"));
-        // System.out.println("hiv_status: " + userData.get("hiv_status"));
-        // System.out.println("diagnosis_date: " + userData.get("diagnosis_date"));
-        // System.out.println("art_status: " + userData.get("art_status"));
-        // System.out.println("art_start_date: " + userData.get("art_start_date"));
-        // System.out.println("country_iso: " + userData.get("country_iso"));
 
-        String [] userDetails = {
-            colorText.red("\nUSER DETAILS TO UPDATE:"),
-            colorText.black("First Name: " + userData.get("first_name")),
-            colorText.black("Last Name: " + userData.get("last_name")),
-            colorText.black("DOB: " + userData.get("dob")),
-            colorText.black("HIV Status: " + userData.get("hiv_status")),
-            colorText.black("Diagnosis Date: " + userData.get("diagnosis_date")),
-            colorText.black("ART Status: " + userData.get("art_status")),
-            colorText.black("ART Start Date: " + userData.get("art_start_date")),
-            colorText.black("Country ISO: " + userData.get("country_iso"))
-        };
-
-        borderText.printBorderedText(userDetails);
+        System.out.println("  ================================================");
+        System.out.println(" |" + colorText.blue("          USER DETAILS TO UPDATE:") + "        ");
+        System.out.println(" | First Name: " + userData.get("first_name"));
+        System.out.println(" | Last Name: " + userData.get("last_name"));
+        System.out.println(" | DOB: " + userData.get("dob"));
+        System.out.println(" | HIV Status: " + userData.get("hiv_status"));
+        System.out.println(" | Diagnosis Date: " + userData.get("diagnosis_date"));
+        System.out.println(" | ART Status: " + userData.get("art_status"));
+        System.out.println(" | ART Status Date: " + userData.get("art_start_date"));
+        System.out.println(" | Country ISO: " + userData.get("country_iso"));
+        System.out.println("  ================================================");
     }
 
     private static void updatePatientProfile(Scanner scanner, String email){
@@ -213,7 +192,7 @@ public class Patient extends User {
         //scanner.close();
     }
     private static boolean updateUser(String email, String field, String newValue) throws Exception {
-        ProcessBuilder processBuilder = new ProcessBuilder( "C:\\Program Files\\Git\\bin\\bash.exe", "script/update_user.sh", "update", email, field, newValue);
+        ProcessBuilder processBuilder = new ProcessBuilder( "script/update_user.sh", "update", email, field, newValue);
         processBuilder.redirectErrorStream(true);
         Process process = processBuilder.start();
 
@@ -230,33 +209,22 @@ public class Patient extends User {
 
     private void patientProfile(String email) {
         try {
-            String result = ScriptExecutor.executeScript("C:\\Program Files\\Git\\bin\\bash.exe", "script/user_management.sh", "view_profile", email);
+            String result = ScriptExecutor.executeScript("script/user_management.sh", "view_profile", email);
             //System.out.println("\nPatient Profile");
             String[] parts = result.split(",");
-            // System.out.println("\nFirstName: " + parts[2]);
-            // System.out.println("\nlastName: " + parts[3]);
-            // System.out.println("\nemail: " + parts[0]);
-            // System.out.println("\ndate of birth: " + parts[5]);
-            // System.out.println("\ndiagnosis Status: " + parts[6]);
-            // System.out.println("\ndiagnosis Date: " + parts[7]);
-            // System.out.println("\nART Status: " + parts[8]);
-            // System.out.println("\nART Date: " + parts[9]);
-            // System.out.println("\nCountry ISO: " + parts[10]);
 
-            String [] userDetails = {
-                color.red("\nPATIENT PROFILE"),
-                color.black("\nFirst Name: " + parts[2]),
-                color.black("\nLast Name: " + parts[3]),
-                color.black("\nEmail " + parts[0]),
-                color.black("Date of Birth: " + parts[5]),
-                color.black("Diagnosis Status: " + parts[6]),
-                color.black("Diagnosis Date: " + parts[7]),
-                color.black("ART Status: " + parts[8]),
-                color.black("ART Date: " + parts[9]),
-                color.black("Country ISO: " + parts[10])
-            };
-    
-            border.printBorderedText(userDetails);
+            System.out.println("  ================================================");
+            System.out.println(" |" + color.blue("          PATIENT PROFILE:") + "        ");
+            System.out.println(" | First Name: " + parts[2]);
+            System.out.println(" | last Name: " + parts[3]);
+            System.out.println(" | Email: " + parts[0]);
+            System.out.println(" | Date of Birth: " + parts[5]);
+            System.out.println(" | Diagnosis Status: " + parts[6]);
+            System.out.println(" | Diagnosis Date: " + parts[7]);
+            System.out.println(" | ART Status: " + parts[8]);
+            System.out.println(" | ART Date: " + parts[9]);
+            System.out.println(" | Country ISO: " + parts[10]);
+            System.out.println("  ================================================");
 
             Logger.log("Viewed profile for user: " + email);
         } catch (Exception e) {

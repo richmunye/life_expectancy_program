@@ -1,14 +1,11 @@
 package User;
 
 import java.util.Scanner;
-
-import Views.BorderAroundText;
 import Views.ColorText;
 
 public class UserAuthenticationSystem {
   private Scanner scanner;
   ColorText color = new ColorText();
-  BorderAroundText border = new BorderAroundText();
 
   public UserAuthenticationSystem(Scanner scanner) {
     this.scanner = scanner;
@@ -23,7 +20,7 @@ public class UserAuthenticationSystem {
         adminLogin(scanner);
       } else if (input.contains("@")) {
         try {
-          String result = ScriptExecutor.executeScript( "C:\\Program Files\\Git\\bin\\bash.exe", "script/user_management.sh", "get_by_email", input);
+          String result = ScriptExecutor.executeScript( "script/user_management.sh", "get_by_email", input);
           System.out.println(result);
           if (result != null && !result.isEmpty() && !result.equals(color.red("not_found"))) {
             String[] parts = result.split(",");
@@ -60,7 +57,7 @@ public class UserAuthenticationSystem {
 
   private void patientLoginByEmail(String email, Scanner scanner) {
     try {
-      String result = ScriptExecutor.executeScript("C:\\Program Files\\Git\\bin\\bash.exe", "script/user_management.sh", "get_by_email", email);
+      String result = ScriptExecutor.executeScript("script/user_management.sh", "get_by_email", email);
       if (result != null && !result.isEmpty()) {
         String[] parts = result.split(",");
         if (parts.length >= 2) {
@@ -83,7 +80,7 @@ public class UserAuthenticationSystem {
 
   private void patientLoginByUUID(String uuid, Scanner scanner) {
     try {
-      String result = ScriptExecutor.executeScript("C:\\Program Files\\Git\\bin\\bash.exe", "script/user_management.sh", "verify_uuid", uuid);
+      String result = ScriptExecutor.executeScript("script/user_management.sh", "verify_uuid", uuid);
       if (result != null && !result.isEmpty()) {
         String[] parts = result.split(",");
         if (parts != null) {

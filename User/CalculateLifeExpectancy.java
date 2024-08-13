@@ -4,23 +4,26 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import Views.ColorText;
 
 public class CalculateLifeExpectancy {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter patient email: ");
+        ColorText color = new ColorText();
+        System.out.print(color.blue("Enter patient email: "));
         String email = scanner.nextLine();
-
+        
         int patientRemainingLife = calculatePatientLifeExpectancy(email);
-        System.out.println("Patient's remaining life expectancy: " + patientRemainingLife + " years");
+        System.out.println(color.green("Patient's remaining life expectancy: " + patientRemainingLife + " years"));
         scanner.close();
     }
 
-    public static int calculatePatientLifeExpectancy(String email) {
+    public static int calculatePatientLifeExpectancy(String email) {      
+        ColorText color = new ColorText();  
         try {
             List<String> userDetails = getUserDetailsByEmail(email);
             if (userDetails.isEmpty()) {
-                System.out.println("No user details found for email: " + email);
+                System.out.println(color.red("No user details found for email: " + email));
                 return -1;
             }
             String dob = userDetails.get(0);
@@ -60,7 +63,7 @@ public class CalculateLifeExpectancy {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            System.out.println("error" + ex);
+            System.out.println(color.red("error" + ex));
             return 3;
         }
     }
