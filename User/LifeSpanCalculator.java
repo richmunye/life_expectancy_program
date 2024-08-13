@@ -2,14 +2,16 @@ package User;
 
 import java.util.ArrayList;
 import java.util.List;
+import Views.ColorText;
 
 public class LifeSpanCalculator {
 
     public static int calculatePatientLifeExpectancy(String email) {
+        ColorText color = new ColorText();
         try {
             List<String> userDetails = getUserDetailsByEmail(email);
             if (userDetails.isEmpty()) {
-                System.out.println("No user details found for email: " + email);
+                System.out.println(color.red("No user details found for email: " + email));
                 return -1;
             }
             String dob = userDetails.get(0);
@@ -49,7 +51,7 @@ public class LifeSpanCalculator {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            System.out.println("error" + ex);
+            System.out.println(color.red("error" + ex));
             return -1;
         }
     }

@@ -5,33 +5,34 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
+import Views.ColorText;
 
 public class Validation {
     private static final Console console = System.console();
 
-    //    Password validation
     static String getValidatePassword() {
+        ColorText color = new ColorText();
         String password = null;
         boolean passwordsMatch = false;
 
         while (!passwordsMatch) {
-            char[] passwordArray = console.readPassword("Password: ");
+            char[] passwordArray = console.readPassword(color.blue("Password: "));
             password = new String(passwordArray);
-            char[] confirmPasswordArray = console.readPassword("Confirm Password: ");
+            char[] confirmPasswordArray = console.readPassword(color.blue("Confirm Password: "));
             String confirmPassword = new String(confirmPasswordArray);
 
             if (password.equals(confirmPassword)) {
                 passwordsMatch = true;
             } else {
-                System.out.println("Passwords do not match. Please try again.");
+                System.out.println(color.red("Passwords do not match. Please try again."));
             }
         }
 
         return password;
     }
 
-    //    Validate Date
     public static String getValidDate(Scanner scanner, String prompt) {
+        ColorText color = new ColorText();
         String dateStr = "";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         boolean validDate = false;
@@ -41,20 +42,18 @@ public class Validation {
             dateStr = scanner.nextLine();
 
             try {
-                // Attempt to parse the date
                 LocalDate date = LocalDate.parse(dateStr, formatter);
-                validDate = true; // Date is valid
+                validDate = true;
             } catch (DateTimeParseException e) {
-                // If parsing fails, the date is not valid
-                System.out.println("Invalid date format. Please enter the date in YYYY-MM-DD format.");
+                System.out.println(color.red("Invalid date format. Please enter the date in YYYY-MM-DD format."));
             }
         }
 
         return dateStr;
     }
 
-    // Validate ("true" or "false")
     public static boolean getValidBoolean(Scanner scanner, String prompt) {
+        ColorText color = new ColorText();
         String input = "";
         boolean validInput = false;
 
@@ -67,7 +66,7 @@ public class Validation {
             } else if (input.equals("false")) {
                 return false;
             } else {
-                System.out.println("Invalid input. Please enter 'true' or 'false'.");
+                System.out.println(color.red("Invalid input. Please enter 'true' or 'false'."));
             }
         }
 
