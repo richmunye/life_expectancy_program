@@ -2,13 +2,16 @@ package User;
 
 import java.util.Scanner;
 import Views.ColorText;
+import java.io.Console;
 
 public class UserAuthenticationSystem {
   private Scanner scanner;
+  private final Console console;
   ColorText color = new ColorText();
 
   public UserAuthenticationSystem(Scanner scanner) {
     this.scanner = scanner;
+    this.console = System.console();
   }
 
   public void start() {
@@ -44,11 +47,17 @@ public class UserAuthenticationSystem {
   }
 
   private void adminLogin(Scanner scanner) {
-    System.out.print(color.blue("Enter admin password: "));
-    String password = scanner.nextLine();
+    // System.out.print(color.blue("Enter admin password: "));
+    // String password = scanner.nextLine();
+    // if (console == null) {
+    //   System.out.println("No console available. Cannot securely enter a password.");
+    //   return;
+    // }
+    char[] passwordArray = console.readPassword(color.blue("Enter admin password: "));
+    String password = new String(passwordArray);
 
     if (Admin.login(Admin.ADMIN_EMAIL, password)) {
-      new Admin().menu(scanner);
+      new Admin().menu(new Scanner(System.in));
     } else {
       System.out.println(color.red("Invalid admin password."));
       Logger.log("Failed admin login attempt");

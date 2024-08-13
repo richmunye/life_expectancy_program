@@ -115,6 +115,7 @@ update_profile() {
 
   # Use openssl to hash the password
   hashed_password=$(echo "$password" | openssl passwd -salt vZJw1PdD --stdin)
+  echo "$email" "$USER_DATA_FILE"
   # Check if user exists and needs to complete registration
   if grep -q "$email" "$USER_DATA_FILE"; then
     # Use awk to update the user's information in the CSV file

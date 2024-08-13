@@ -1,6 +1,7 @@
 package User;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +9,8 @@ import java.util.Scanner;
 import Views.ColorText;
 
 public class Patient extends User {
+    private final Console console = System.console();
+
     public Patient(String uuid, String email) {
         super(uuid, email);
     }
@@ -30,25 +33,39 @@ public class Patient extends User {
         String firstName = scanner.nextLine();
         System.out.print(color.blue("Last Name: "));
         String lastName = scanner.nextLine();
-        System.out.print(color.blue("Password: "));
-        String password = scanner.nextLine();
-        System.out.print(color.blue("Date of Birth (YYYY-MM-DD): "));
-        String dateOfBirth = scanner.nextLine();
-        System.out.print(color.blue("HIV Status (true/false): "));
-        boolean hivStatus = scanner.nextBoolean();
+
+        // Validate Password
+        String password = Validation.getValidatePassword();
+
+        // Get and validate the date of birth
+        String dateOfBirth = Validation.getValidDate(scanner, color.blue("Date of Birth (YYYY-MM-DD): "));
+        // HIV status
+        boolean hivStatus = Validation.getValidBoolean(scanner, color.blue("HIV Status (true/false): "));
+
+
+        // System.out.print(color.blue("Password: "));
+        // String password = scanner.nextLine();
+        // System.out.print(color.blue("Date of Birth (YYYY-MM-DD): "));
+        // String dateOfBirth = scanner.nextLine();
+        // System.out.print(color.blue("HIV Status (true/false): "));
+        // boolean hivStatus = scanner.nextBoolean();
         scanner.nextLine(); // Consume newline
         String diagnosisDate = "";
         if (hivStatus) {
-            System.out.print(color.blue("Diagnosis Date (YYYY-MM-DD): "));
-            diagnosisDate = scanner.nextLine();
+            diagnosisDate = Validation.getValidDate(scanner, color.blue("Diagnosis (YYYY-MM-DD): "));
+            // System.out.print(color.blue("Diagnosis Date (YYYY-MM-DD): "));
+            // diagnosisDate = scanner.nextLine();
         }
-        System.out.print(color.blue("ART Status (true/false): "));
-        boolean artStatus = scanner.nextBoolean();
-        scanner.nextLine(); // Consume newline
+        // System.out.print(color.blue("ART Status (true/false): "));
+        // boolean artStatus = scanner.nextBoolean();
+        // scanner.nextLine(); // Consume newline
+        // ART Status
+        boolean artStatus = Validation.getValidBoolean(scanner, color.blue("ART Status (true/false): "));
         String artStartDate = "";
         if (artStatus) {
-            System.out.print(color.blue("ART Start Date (YYYY-MM-DD): "));
-            artStartDate = scanner.nextLine();
+            artStartDate = Validation.getValidDate(scanner, "Art Start (YYYY-MM-DD): ");
+            // System.out.print(color.blue("ART Start Date (YYYY-MM-DD): "));
+            // artStartDate = scanner.nextLine();
         }
         System.out.print(color.blue("Country ISO Code: "));
         String countryISOCode = scanner.nextLine();
@@ -60,8 +77,14 @@ public class Patient extends User {
                     artStartDate, countryISOCode);
             System.out.println(result);
             if(result != null && !result.isEmpty()) {
-                int patientRemainingLife = LifeSpanCalculator.calculatePatientLifeExpectancy("peace@gmail.com");
-                System.out.println(color.green("Patient's Remaining Life: " + patientRemainingLife + " Years"));
+                int patientRemainingLife = LifeSpanCalculator.calculatePatientLifeExpectancy(this.email.trim());
+                try {
+                    ScriptExecutor.executeScript("script/analyze_life_expectancy.sh", "update_user_life_span",
+                            this.email.trim(), Integer.toString(patientRemainingLife));
+                } catch (Exception e) {
+                    Logger.log("Error while Updating life span " + e.getMessage());
+                }
+                //System.out.println(color.green("Patient's Remaining Life: " + patientRemainingLife + " Years"));
             }
             Logger.log("Updated profile for patient: " + this.email);
         } catch (Exception e) {
@@ -71,8 +94,10 @@ public class Patient extends User {
     }
 
     private void authenticateAndProceed(Scanner scanner) {
-        System.out.print(color.blue("Enter your password: "));
-        String password = scanner.nextLine();
+        // System.out.print(color.blue("Enter your password: "));
+        // String password = scanner.nextLine();
+        char[] passwordArray = console.readPassword(color.blue("Enter your password: "));
+        String password = new String(passwordArray);
 
         try {
             String result = ScriptExecutor.executeScript("script/user_management.sh", "validate_password",
@@ -111,7 +136,7 @@ public class Patient extends User {
                     patientProfile(email);
                     break;
                 case 2:
-                    //System.out.println("Press enter if you do not want to update the field!!");
+                    // System.out.println("Press enter if you do not want to update the field!!");
                     updatePatientProfile(scanner, email);
                     break;
                 case 3:
@@ -189,10 +214,11 @@ public class Patient extends User {
             System.out.println(colorText.red("User not found."));
         }
 
-        //scanner.close();
+        // scanner.close();
     }
+
     private static boolean updateUser(String email, String field, String newValue) throws Exception {
-        ProcessBuilder processBuilder = new ProcessBuilder( "script/update_user.sh", "update", email, field, newValue);
+        ProcessBuilder processBuilder = new ProcessBuilder("script/update_user.sh", "update", email, field, newValue);
         processBuilder.redirectErrorStream(true);
         Process process = processBuilder.start();
 

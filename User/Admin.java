@@ -39,6 +39,8 @@ public class Admin extends User {
                 case 2:
                     exportPatients();
                     break;
+                case 3:
+                    analytics();
                 case 4:
                     return;
                 default:
@@ -74,6 +76,16 @@ public class Admin extends User {
         } catch (Exception e) {
             System.out.println(color.red("Error registering patient: " + e.getMessage()));
             Logger.log("Error registering patient: " + e.getMessage());
+        }
+    }
+
+    private void analytics (){
+        try{
+            String result = ScriptExecutor.executeScript("script/analyze_life_expectancy.sh", "analyze_life_expectancy", "12");
+            System.out.println(result);
+            Logger.log("Exported the system analytics");
+        }catch (Exception e){
+            Logger.log("Error exporting analytics " + e.getMessage());
         }
     }
 }
