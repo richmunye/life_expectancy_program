@@ -42,30 +42,15 @@ public class Patient extends User {
         // HIV status
         boolean hivStatus = Validation.getValidBoolean(scanner, color.blue("HIV Status (true/false): "));
 
-
-        // System.out.print(color.blue("Password: "));
-        // String password = scanner.nextLine();
-        // System.out.print(color.blue("Date of Birth (YYYY-MM-DD): "));
-        // String dateOfBirth = scanner.nextLine();
-        // System.out.print(color.blue("HIV Status (true/false): "));
-        // boolean hivStatus = scanner.nextBoolean();
-        scanner.nextLine(); // Consume newline
         String diagnosisDate = "";
         if (hivStatus) {
-            diagnosisDate = Validation.getValidDate(scanner, color.blue("Diagnosis (YYYY-MM-DD): "));
-            // System.out.print(color.blue("Diagnosis Date (YYYY-MM-DD): "));
-            // diagnosisDate = scanner.nextLine();
+            diagnosisDate = Validation.getValidDate(scanner, color.blue("Diagnosis (YYYY-MM-DD): "));            
         }
-        // System.out.print(color.blue("ART Status (true/false): "));
-        // boolean artStatus = scanner.nextBoolean();
-        // scanner.nextLine(); // Consume newline
         // ART Status
         boolean artStatus = Validation.getValidBoolean(scanner, color.blue("ART Status (true/false): "));
         String artStartDate = "";
         if (artStatus) {
             artStartDate = Validation.getValidDate(scanner, "Art Start (YYYY-MM-DD): ");
-            // System.out.print(color.blue("ART Start Date (YYYY-MM-DD): "));
-            // artStartDate = scanner.nextLine();
         }
         System.out.print(color.blue("Country ISO Code: "));
         String countryISOCode = scanner.nextLine();
@@ -84,7 +69,6 @@ public class Patient extends User {
                 } catch (Exception e) {
                     Logger.log("Error while Updating life span " + e.getMessage());
                 }
-                //System.out.println(color.green("Patient's Remaining Life: " + patientRemainingLife + " Years"));
             }
             Logger.log("Updated profile for patient: " + this.email);
         } catch (Exception e) {
@@ -94,8 +78,6 @@ public class Patient extends User {
     }
 
     private void authenticateAndProceed(Scanner scanner) {
-        // System.out.print(color.blue("Enter your password: "));
-        // String password = scanner.nextLine();
         char[] passwordArray = console.readPassword(color.blue("Enter your password: "));
         String password = new String(passwordArray);
 

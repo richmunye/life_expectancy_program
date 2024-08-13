@@ -47,12 +47,11 @@ public class UserAuthenticationSystem {
   }
 
   private void adminLogin(Scanner scanner) {
-    // System.out.print(color.blue("Enter admin password: "));
-    // String password = scanner.nextLine();
-    // if (console == null) {
-    //   System.out.println("No console available. Cannot securely enter a password.");
-    //   return;
-    // }
+    if(console == null){
+      System.out.println(color.red("No console available. Cannot securely enter a password."));
+      return;
+    }
+    
     char[] passwordArray = console.readPassword(color.blue("Enter admin password: "));
     String password = new String(passwordArray);
 
