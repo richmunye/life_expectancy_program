@@ -25,7 +25,6 @@ public class Patient extends User {
         }
     }
 
-
     private void completeRegistration(Scanner scanner) {
         System.out.print("First Name: ");
         String firstName = scanner.nextLine();
@@ -60,8 +59,13 @@ public class Patient extends User {
                     artStartDate, countryISOCode);
             System.out.println(result);
             if (result != null && !result.isEmpty()) {
-                int patientRemainingLife = LifeSpanCalculator.calculatePatientLifeExpectancy("peace@gmail.com");
-                System.out.println("Patient's Remaining Life: " + patientRemainingLife + " Years");
+                int patientRemainingLife = LifeSpanCalculator.calculatePatientLifeExpectancy(this.email.trim());
+                try {
+                    ScriptExecutor.executeScript("script/analyze_life_expectancy.sh", "update_user_life_span",
+                            this.email.trim(), Integer.toString(patientRemainingLife));
+                } catch (Exception e) {
+                    Logger.log("Error while Updating life span " + e.getMessage());
+                }
             }
             Logger.log("Updated profile for patient: " + this.email);
         } catch (Exception e) {
@@ -73,7 +77,6 @@ public class Patient extends User {
     private void authenticateAndProceed(Scanner scanner) {
         char[] passwordArray = console.readPassword("Enter your password: ");
         String password = new String(passwordArray);
-
 
         try {
             String result = ScriptExecutor.executeScript("script/user_management.sh", "validate_password",
@@ -108,7 +111,7 @@ public class Patient extends User {
                     patientProfile(email);
                     break;
                 case 2:
-                    //System.out.println("Press enter if you do not want to update the field!!");
+                    // System.out.println("Press enter if you do not want to update the field!!");
                     updatePatientProfile(scanner, email);
                     break;
                 case 3:
@@ -157,7 +160,8 @@ public class Patient extends User {
         if (userData != null && !userData.isEmpty()) {
             showUserDetails(userData);
 
-            System.out.print("\nEnter the field you want to update: between (first_name, last_name, dob, hiv_status, diagnosis_date, art_status, art_start_date, country_iso) ");
+            System.out.print(
+                    "\nEnter the field you want to update: between (first_name, last_name, dob, hiv_status, diagnosis_date, art_status, art_start_date, country_iso) ");
             String fieldToUpdate = scanner.nextLine();
             System.out.println(fieldToUpdate + userData);
             if (userData.containsKey(fieldToUpdate)) {
@@ -180,7 +184,7 @@ public class Patient extends User {
             System.out.println("User not found.");
         }
 
-        //scanner.close();
+        // scanner.close();
     }
 
     private static boolean updateUser(String email, String field, String newValue) throws Exception {
