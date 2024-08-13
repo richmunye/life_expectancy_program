@@ -5,8 +5,11 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.io.Console;
 
 public class Patient extends User {
+    private final Console console = System.console();
+
     public Patient(String uuid, String email) {
         super(uuid, email);
     }
@@ -22,30 +25,30 @@ public class Patient extends User {
         }
     }
 
+
     private void completeRegistration(Scanner scanner) {
         System.out.print("First Name: ");
         String firstName = scanner.nextLine();
         System.out.print("Last Name: ");
         String lastName = scanner.nextLine();
-        System.out.print("Password: ");
-        String password = scanner.nextLine();
-        System.out.print("Date of Birth (YYYY-MM-DD): ");
-        String dateOfBirth = scanner.nextLine();
-        System.out.print("HIV Status (true/false): ");
-        boolean hivStatus = scanner.nextBoolean();
-        scanner.nextLine(); // Consume newline
+
+        // Validate Password
+        String password = Validation.getValidatePassword();
+
+        // Get and validate the date of birth
+        String dateOfBirth = Validation.getValidDate(scanner, "Date of Birth (YYYY-MM-DD): ");
+
+        // HIV status
+        boolean hivStatus = Validation.getValidBoolean(scanner, "HIV Status (true/false): ");
         String diagnosisDate = "";
         if (hivStatus) {
-            System.out.print("Diagnosis Date (YYYY-MM-DD): ");
-            diagnosisDate = scanner.nextLine();
+            diagnosisDate = Validation.getValidDate(scanner, "Diagnosis (YYYY-MM-DD): ");
         }
-        System.out.print("ART Status (true/false): ");
-        boolean artStatus = scanner.nextBoolean();
-        scanner.nextLine(); // Consume newline
+        // ART Status
+        boolean artStatus = Validation.getValidBoolean(scanner, "ART Status (true/false): ");
         String artStartDate = "";
         if (artStatus) {
-            System.out.print("ART Start Date (YYYY-MM-DD): ");
-            artStartDate = scanner.nextLine();
+            artStartDate = Validation.getValidDate(scanner, "Art Start (YYYY-MM-DD): ");
         }
         System.out.print("Country ISO Code: ");
         String countryISOCode = scanner.nextLine();
@@ -56,7 +59,7 @@ public class Patient extends User {
                     String.valueOf(hivStatus), diagnosisDate, String.valueOf(artStatus),
                     artStartDate, countryISOCode);
             System.out.println(result);
-            if(result != null && !result.isEmpty()) {
+            if (result != null && !result.isEmpty()) {
                 int patientRemainingLife = LifeSpanCalculator.calculatePatientLifeExpectancy("peace@gmail.com");
                 System.out.println("Patient's Remaining Life: " + patientRemainingLife + " Years");
             }
@@ -68,8 +71,9 @@ public class Patient extends User {
     }
 
     private void authenticateAndProceed(Scanner scanner) {
-        System.out.print("Enter your password: ");
-        String password = scanner.nextLine();
+        char[] passwordArray = console.readPassword("Enter your password: ");
+        String password = new String(passwordArray);
+
 
         try {
             String result = ScriptExecutor.executeScript("script/user_management.sh", "validate_password",
@@ -118,7 +122,7 @@ public class Patient extends User {
     private static Map<String, String> readUser(String email) {
         Map<String, String> userData = new HashMap<>();
         try {
-            String result = ScriptExecutor.executeScript( "script/update_user.sh", "read", email);
+            String result = ScriptExecutor.executeScript("script/update_user.sh", "read", email);
             System.out.println(result + "these are the data we are building");
             if (result != null && !result.equals("User not found")) {
                 String[] fields = result.split(",");
@@ -147,7 +151,8 @@ public class Patient extends User {
         System.out.println("art_start_date: " + userData.get("art_start_date"));
         System.out.println("country_iso: " + userData.get("country_iso"));
     }
-    private static void updatePatientProfile(Scanner scanner, String email){
+
+    private static void updatePatientProfile(Scanner scanner, String email) {
         Map<String, String> userData = readUser(email);
         if (userData != null && !userData.isEmpty()) {
             showUserDetails(userData);
@@ -177,8 +182,9 @@ public class Patient extends User {
 
         //scanner.close();
     }
+
     private static boolean updateUser(String email, String field, String newValue) throws Exception {
-        ProcessBuilder processBuilder = new ProcessBuilder( "script/update_user.sh", "update", email, field, newValue);
+        ProcessBuilder processBuilder = new ProcessBuilder("script/update_user.sh", "update", email, field, newValue);
         processBuilder.redirectErrorStream(true);
         Process process = processBuilder.start();
 
