@@ -44,18 +44,18 @@ public class Patient extends User {
 
         String diagnosisDate = "";
         if (hivStatus) {
-            diagnosisDate = Validation.getValidDate(scanner, color.blue("Diagnosis (YYYY-MM-DD): "));            
+            diagnosisDate = Validation.getValidDate(scanner, color.blue("Diagnosis (YYYY-MM-DD): "));
         }
         // ART Status
         boolean artStatus = Validation.getValidBoolean(scanner, color.blue("ART Status (true/false): "));
         String artStartDate = "";
         if (artStatus) {
-            artStartDate = Validation.getValidDate(scanner, "Art Start (YYYY-MM-DD): ");
+            artStartDate = Validation.getValidDate(scanner, color.blue("Art Start (YYYY-MM-DD): "));
         }
 
         String countryISOCode = Validation.getValidCountryISOCode(scanner, color.blue("Country ISO Code: "));
-//        System.out.print(color.blue("Country ISO Code: "));
-//        String countryISOCode = scanner.nextLine();
+        // System.out.print(color.blue("Country ISO Code: "));
+        // String countryISOCode = scanner.nextLine();
 
         try {
             String result = ScriptExecutor.executeScript("script/user_management.sh", "update_profile",
@@ -63,7 +63,7 @@ public class Patient extends User {
                     String.valueOf(hivStatus), diagnosisDate, String.valueOf(artStatus),
                     artStartDate, countryISOCode);
             System.out.println(result);
-            if(result != null && !result.isEmpty()) {
+            if (result != null && !result.isEmpty()) {
                 int patientRemainingLife = LifeSpanCalculator.calculatePatientLifeExpectancy(this.email.trim());
                 try {
                     ScriptExecutor.executeScript("script/analyze_life_expectancy.sh", "update_user_life_span",
@@ -135,7 +135,7 @@ public class Patient extends User {
         Map<String, String> userData = new HashMap<>();
         ColorText colorText = new ColorText();
         try {
-            String result = ScriptExecutor.executeScript( "script/update_user.sh", "read", email);
+            String result = ScriptExecutor.executeScript("script/update_user.sh", "read", email);
             System.out.println(colorText.yellow(result + "these are the data we are building"));
             if (result != null && !result.equals("User not found")) {
                 String[] fields = result.split(",");
@@ -169,13 +169,14 @@ public class Patient extends User {
         System.out.println("  ================================================");
     }
 
-    private static void updatePatientProfile(Scanner scanner, String email){
+    private static void updatePatientProfile(Scanner scanner, String email) {
         Map<String, String> userData = readUser(email);
         ColorText colorText = new ColorText();
         if (userData != null && !userData.isEmpty()) {
             showUserDetails(userData);
 
-            System.out.print(colorText.blue("\nEnter the field you want to update: between (first_name, last_name, dob, hiv_status, diagnosis_date, art_status, art_start_date, country_iso) "));
+            System.out.print(colorText.blue(
+                    "\nEnter the field you want to update: between (first_name, last_name, dob, hiv_status, diagnosis_date, art_status, art_start_date, country_iso) "));
             String fieldToUpdate = scanner.nextLine();
             System.out.println(fieldToUpdate + userData);
             if (userData.containsKey(fieldToUpdate)) {
@@ -220,7 +221,7 @@ public class Patient extends User {
     private void patientProfile(String email) {
         try {
             String result = ScriptExecutor.executeScript("script/user_management.sh", "view_profile", email);
-            //System.out.println("\nPatient Profile");
+            // System.out.println("\nPatient Profile");
             String[] parts = result.split(",");
 
             System.out.println("  ================================================");
