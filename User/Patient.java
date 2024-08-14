@@ -55,8 +55,9 @@ public class Patient extends User {
         if (artStatus) {
             artStartDate = Validation.getValidDate(scanner, color.blue("|" + color.blue(" Art Start (YYYY-MM-DD): ")));
         }
-        System.out.print("|" + color.blue(" Country ISO Code: "));
-        String countryISOCode = scanner.nextLine();
+        String countryISOCode = Validation.getValidCountryISOCode(scanner, color.blue("|" + "Country ISO Code: "));
+//        System.out.print("|" + color.blue(" Country ISO Code: "));
+//        String countryISOCode = scanner.nextLine();
 
         System.out.println(" ================================================================");    
 
