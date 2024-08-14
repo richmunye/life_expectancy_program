@@ -53,15 +53,15 @@ public class Validation {
         boolean passwordsMatch = false;
 
         while (!passwordsMatch) {
-            char[] passwordArray = console.readPassword(color.blue("Password: "));
+            char[] passwordArray = console.readPassword("|" + color.blue(" Password: "));
             password = new String(passwordArray);
-            char[] confirmPasswordArray = console.readPassword(color.blue("Confirm Password: "));
+            char[] confirmPasswordArray = console.readPassword("|" + color.blue(" Confirm Password: "));
             String confirmPassword = new String(confirmPasswordArray);
 
             if (password.equals(confirmPassword)) {
                 passwordsMatch = true;
             } else {
-                System.out.println(color.red("Passwords do not match. Please try again."));
+                System.out.println("|" + color.red(" Passwords do not match. Please try again."));
             }
         }
 
@@ -82,7 +82,7 @@ public class Validation {
                 LocalDate date = LocalDate.parse(dateStr, formatter);
                 validDate = true;
             } catch (DateTimeParseException e) {
-                System.out.println(color.red("Invalid date format. Please enter the date in YYYY-MM-DD format."));
+                System.out.println("|" + color.red("Invalid date format. Please enter the date in YYYY-MM-DD format."));
             }
         }
 
@@ -103,7 +103,7 @@ public class Validation {
             } else if (input.equals("false")) {
                 return false;
             } else {
-                System.out.println(color.red("Invalid input. Please enter 'true' or 'false'."));
+                System.out.println("|" + color.red("Invalid input. Please enter 'true' or 'false'."));
             }
         }
 

@@ -70,3 +70,5 @@
 2024-08-13 17:50:41 - Updated profile for patient:  rose@gmail.com
 2024-08-13 17:55:39 - Updated profile for patient:  rose@gmail.com
 >>>>>>> main
+2024-08-14 09:16:22 - Error during login for UUID: clear - Cannot run program "script/user_management.sh": CreateProcess error=193, %1 is not a valid Win32 application
+2024-08-14 09:19:06 - Error during login for UUID: clear - Cannot run program "script/user_management.sh": CreateProcess error=193, %1 is not a valid Win32 application
