@@ -37,7 +37,7 @@ public class UserAuthenticationSystem {
             System.out.println(color.red("Email not found in the system."));
           }
         } catch (Exception e) {
-          System.out.println(color.red("Error during login: " + e.getMessage()));
+          System.out.println(color.red("Invalid Email Address or UUID"));
           Logger.log("Error during login for email: " + input + " - " + e.getMessage());
         }
       } else {

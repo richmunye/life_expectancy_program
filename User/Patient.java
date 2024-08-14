@@ -20,7 +20,9 @@ public class Patient extends User {
     @Override
     public void menu(Scanner scanner) {
         if (firstName == null || firstName.isEmpty()) {
-            System.out.println(color.purple("\nWelcome! Please complete your profile."));
+            System.out.println(" ====================================================");
+            System.out.println("|       " + color.purple("Welcome! Please complete your profile.") + "       |");
+            System.out.println(" ====================================================");
             completeRegistration(scanner);
         } else {
             System.out.println(color.yellow("\nProfile is complete. Enter your password to continue."));
@@ -29,31 +31,34 @@ public class Patient extends User {
     }
 
     private void completeRegistration(Scanner scanner) {
-        System.out.print(color.blue("First Name: "));
+        System.out.println(" =================================================================");
+        System.out.print("|" + color.blue(" First Name: "));
         String firstName = scanner.nextLine();
-        System.out.print(color.blue("Last Name: "));
+        System.out.print("|" + color.blue(" Last Name: "));
         String lastName = scanner.nextLine();
 
         // Validate Password
         String password = Validation.getValidatePassword();
 
         // Get and validate the date of birth
-        String dateOfBirth = Validation.getValidDate(scanner, color.blue("Date of Birth (YYYY-MM-DD): "));
+        String dateOfBirth = Validation.getValidDate(scanner, "|" + color.blue(" Date of Birth (YYYY-MM-DD): "));
         // HIV status
-        boolean hivStatus = Validation.getValidBoolean(scanner, color.blue("HIV Status (true/false): "));
+        boolean hivStatus = Validation.getValidBoolean(scanner, "|" + color.blue(" HIV Status (true/false): "));
 
         String diagnosisDate = "";
         if (hivStatus) {
-            diagnosisDate = Validation.getValidDate(scanner, color.blue("Diagnosis (YYYY-MM-DD): "));            
+            diagnosisDate = Validation.getValidDate(scanner, "|" + color.blue(" Diagnosis (YYYY-MM-DD): "));            
         }
         // ART Status
-        boolean artStatus = Validation.getValidBoolean(scanner, color.blue("ART Status (true/false): "));
+        boolean artStatus = Validation.getValidBoolean(scanner, "|" + color.blue(" ART Status (true/false): "));
         String artStartDate = "";
         if (artStatus) {
-            artStartDate = Validation.getValidDate(scanner, "Art Start (YYYY-MM-DD): ");
+            artStartDate = Validation.getValidDate(scanner, "|" + color.blue(" Art Start (YYYY-MM-DD): "));
         }
-        System.out.print(color.blue("Country ISO Code: "));
+        System.out.print("|" + color.blue(" Country ISO Code: "));
         String countryISOCode = scanner.nextLine();
+
+        System.out.println(" ================================================================");    
 
         try {
             String result = ScriptExecutor.executeScript("script/user_management.sh", "update_profile",
