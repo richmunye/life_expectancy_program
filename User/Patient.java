@@ -23,9 +23,11 @@ public class Patient extends User {
             System.out.println(" ====================================================");
             System.out.println("|       " + color.purple("Welcome! Please complete your profile.") + "       |");
             System.out.println(" ====================================================");
+            System.out.println();
             completeRegistration(scanner);
         } else {
             System.out.println(color.yellow("\nProfile is complete. Enter your password to continue."));
+            System.out.println();
             authenticateAndProceed(scanner);
         }
     }
