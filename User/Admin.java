@@ -62,7 +62,10 @@ public class Admin extends User {
     }
 
     private void registerPatient(Scanner scanner) {
-        System.out.print(color.blue("Enter patient email: "));
+        System.out.println(" =================================================");
+        System.out.print("|" + color.blue(" Enter patient email: "));
+        System.out.println();
+        System.out.println(" =================================================");
         String email = scanner.nextLine();
 
         try {

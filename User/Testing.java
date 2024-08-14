@@ -8,6 +8,13 @@ public class Testing {
     public static void main (String [] args){
         Scanner scanner = new Scanner(System.in);
         ColorText color = new ColorText();
+        
+        System.out.println(" =================================================");
+        System.out.print("|" + color.blue(" Enter patient email: "));
+        System.out.println();
+        System.out.println(" =================================================");
+
+
         System.out.println(" ====================================================");
         System.out.println("|       " + color.purple("Welcome! Please complete your profile.") + "       |");
         System.out.println(" ====================================================");
