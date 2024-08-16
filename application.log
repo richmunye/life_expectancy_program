@@ -72,3 +72,14 @@
 >>>>>>> main
 2024-08-14 09:16:22 - Error during login for UUID: clear - Cannot run program "script/user_management.sh": CreateProcess error=193, %1 is not a valid Win32 application
 2024-08-14 09:19:06 - Error during login for UUID: clear - Cannot run program "script/user_management.sh": CreateProcess error=193, %1 is not a valid Win32 application
+2024-08-14 12:40:40 - Viewed profile for user: elie@gmail.com
+2024-08-14 12:43:01 - Updated profile for patient:  user_500@example.com
+2024-08-14 13:25:25 - Updated profile for patient:  user_500@example.com
+2024-08-14 13:27:55 - Viewed profile for user: user_500@example.com
+2024-08-14 13:29:11 - Registered patient with email: kagabo20@gmail.com
+2024-08-14 13:31:10 - Updated profile for patient:  kagabo20@gmail.com
+2024-08-14 13:31:36 - Viewed profile for user: kagabo20@gmail.com
+2024-08-14 13:32:03 - Viewed profile for user: kagabo20@gmail.com
+2024-08-14 13:32:11 - User authentication attempted for: kagabo20@gmail.com
+2024-08-14 13:32:24 - Exported patient data
+2024-08-14 13:32:43 - Exported the system analytics

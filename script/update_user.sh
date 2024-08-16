@@ -5,9 +5,9 @@ ACTION="$1"
 EMAIL="$2"
 
 read_user() {
-    while IFS=',' read -r email uuid firstname lastname password dob hiv_status hivData artStatus artDate countryIso; do
+    while IFS=',' read -r email uuid firstname lastname password dob hiv_status hivData artStatus artDate countryIso life_span; do
         if [[ "$email" == "$EMAIL" ]]; then
-            echo "first_name:$firstname,last_name:$lastname,dob:$dob,hiv_status:$hiv_status,diagnosis_date:$hivData,art_status:$artStatus,art_start_date:$artDate,country_iso:$countryIso"
+            echo "first_name:$firstname,last_name:$lastname,dob:$dob,hiv_status:$hiv_status,diagnosis_date:$hivData,art_status:$artStatus,art_start_date:$artDate,country_iso:$countryIso,life_span:$life_span"
             return
         fi
     done < <(tail -n +2 "$CSV_FILE") # Skip the header
@@ -19,7 +19,7 @@ update_user() {
     NEW_VALUE="$4"
     TEMP_FILE=$(mktemp)
     header_line=$(awk 'NR==1' "$CSV_FILE")
-    IFS=',' read -r -a HEADERS <<< "$header_line"
+    IFS=',' read -r -a HEADERS <<<"$header_line"
     echo "$header_line"
 
     FIELD_INDEX=-1
@@ -46,20 +46,20 @@ update_user() {
             # shellcheck disable=SC2001
             echo "${VALUES[*]}" | sed 's/ /,/g'
         done
-    } < <(tail -n +2 "$CSV_FILE") > "$TEMP_FILE"
+    } < <(tail -n +2 "$CSV_FILE") >"$TEMP_FILE"
 
     mv "$TEMP_FILE" "$CSV_FILE"
     echo "User updated successfully"
 }
 
 case "$ACTION" in
-    read)
-        read_user
-        ;;
-    update)
-        update_user "$@"
-        ;;
-    *)
-        echo "Unknown action: $ACTION"
-        ;;
+read)
+    read_user
+    ;;
+update)
+    update_user "$@"
+    ;;
+*)
+    echo "Unknown action: $ACTION"
+    ;;
 esac

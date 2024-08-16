@@ -59,7 +59,8 @@ public class LifeSpanCalculator {
     private static List<String> getUserDetailsByEmail(String email) {
         try {
             List<String> userDetails = new ArrayList<>();
-            String result = ScriptExecutor.executeScript(  "script/user_management.sh", "get_user_details_by_email", email);
+            String result = ScriptExecutor.executeScript("script/user_management.sh", "get_user_details_by_email",
+                    email);
             String[] parts = result.split(",");
             for (int i = 0; i < parts.length; i++) {
                 userDetails.add(parts[i]);
@@ -71,10 +72,10 @@ public class LifeSpanCalculator {
         }
     }
 
-
     private static double getLifeExpectancyByCountryCode(String countryCode) {
         try {
-            String result = ScriptExecutor.executeScript("bash", "script/user_management.sh", "get_life_expectancy_by_country_code", countryCode);
+            String result = ScriptExecutor.executeScript("bash", "script/user_management.sh",
+                    "get_life_expectancy_by_country_code", countryCode);
             return Double.parseDouble(result);
         } catch (Exception ex) {
             ex.printStackTrace();

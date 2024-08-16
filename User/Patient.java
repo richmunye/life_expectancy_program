@@ -58,10 +58,10 @@ public class Patient extends User {
             artStartDate = Validation.getValidDate(scanner, color.blue("|" + color.blue(" Art Start (YYYY-MM-DD): ")));
         }
         String countryISOCode = Validation.getValidCountryISOCode(scanner, color.blue("|" + "Country ISO Code: "));
-//        System.out.print("|" + color.blue(" Country ISO Code: "));
-//        String countryISOCode = scanner.nextLine();
+        // System.out.print("|" + color.blue(" Country ISO Code: "));
+        // String countryISOCode = scanner.nextLine();
 
-        System.out.println(" ================================================================");    
+        System.out.println(" ================================================================");
 
         try {
             String result = ScriptExecutor.executeScript("script/user_management.sh", "update_profile",
@@ -172,6 +172,7 @@ public class Patient extends User {
         System.out.println(" | ART Status: " + userData.get("art_status"));
         System.out.println(" | ART Status Date: " + userData.get("art_start_date"));
         System.out.println(" | Country ISO: " + userData.get("country_iso"));
+        System.out.println(" | Life Span: " + userData.get("life_span") + " Years");
         System.out.println("  ================================================");
     }
 
@@ -241,6 +242,7 @@ public class Patient extends User {
             System.out.println(" | ART Status: " + parts[8]);
             System.out.println(" | ART Date: " + parts[9]);
             System.out.println(" | Country ISO: " + parts[10]);
+            System.out.println(" | Life Span: " + parts[11] + " Years");
             System.out.println("  ================================================");
 
             Logger.log("Viewed profile for user: " + email);
